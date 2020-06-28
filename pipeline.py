@@ -60,7 +60,7 @@ def train_and_eval_op(image: str, pvolume: PipelineVolume, data_dir: str, ):
     description='Fashion MNIST Training Pipeline to be executed on KubeFlow.'
 )
 def training_pipeline(image: str = 'harbor.querycap.com/rk-ai/kubeflow-minst:v0.0.1',
-                      repo_url: str = 'git@git.querycap.com:hanran/kubeflow-minst-test.git',
+                      repo_url: str = 'https://github.com/hanranCode/kubeflow-test.git',
                       data_dir: str = '/workspace'):
     git_clone = git_clone_darkrai_op(repo_url=repo_url)
 
