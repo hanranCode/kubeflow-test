@@ -1,0 +1,8 @@
+*.pyc
+*.local
+.idea
+.cache
+tmp
+outputs
+inference
+tocaffe_tmp
