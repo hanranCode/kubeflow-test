@@ -43,7 +43,11 @@ def preprocess_op(image: str, pvolume: PipelineVolume, data_dir: str):
     )
 
 
-def train_and_eval_op(image: str, pvolume: PipelineVolume, data_dir: str, ):
+def train_and_eval_op(image: str, pvolume: PipelineVolume, data_dir: str, gpulimit: int = 1):
+    # container: set gpus limit
+    # gpu_op = dsl.ContainerOp(name='training and evaluation', ...)
+    # nodeSelector
+    # gpu_op.add_node_selector_constraint('hanran', 'nvidia-tesla-p4')
     return dsl.ContainerOp(
         name='training and evaluation',
         image=image,
@@ -52,7 +56,7 @@ def train_and_eval_op(image: str, pvolume: PipelineVolume, data_dir: str, ):
         file_outputs={'output': f'{PROJECT_ROOT}/output.txt'},
         container_kwargs={'image_pull_policy': 'IfNotPresent'},
         pvolumes={"/workspace": pvolume}
-    )
+    ).set_gpu_limit(gpulimit).add_node_selector_constraint('hanran', 'nvidia-tesla-p4')
 
 
 @dsl.pipeline(
@@ -75,5 +79,4 @@ def training_pipeline(image: str = 'harbor.querycap.com/rk-ai/kubeflow-minst:v0.
 
 if __name__ == '__main__':
     import kfp.compiler as compiler
-
     compiler.Compiler().compile(training_pipeline, __file__ + '.tar.gz')
